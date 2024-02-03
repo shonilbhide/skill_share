@@ -1,20 +1,10 @@
 from flask import Flask
+from Routes.user_routes import user_blueprint
 import DB
 
 app = Flask(__name__)
-
-@app.get('/hello')
-def hello():
-    db = DB.get_db()
-    try:
-        res = list(db.users.find({
-            "id" : "test"
-        }))
-        print(res)
-        print("Pinged your deployment. You successfully connected to MongoDB!")
-    except Exception as e:
-        print(e)
-    return 'Hello'
+DB.get_db()
+app.register_blueprint(user_blueprint)
 
 if __name__ == '__main__':
     app.run(debug=True)
