@@ -5,6 +5,7 @@ class MatchedUsers(EmbeddedDocument):
     requested_status = BooleanField()
 
 class Request(Document):
+    # id = IntField()
     user = ReferenceField('User')
     vec = StringField()
     title = StringField(required=True)

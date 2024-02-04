@@ -24,12 +24,11 @@ def create_request():
         current_user_email = get_jwt_identity()
         user = User.objects(email = current_user_email).first()
         if user:
-            req = Request(
-                user=user,
-                title=data.get('title'),
-                description=data.get('description'),
-                satisfied = False
-                )
+            req = Request(user=user,
+                            title=data.get('title'),
+                            description=data.get('description'),
+                            matched_users = data.get('matched_users'),
+                            satisfied = False)
             req.save()
             req_json = req.to_json()
             req_dict = json.loads(req_json)
@@ -41,17 +40,16 @@ def create_request():
 @jwt_required()
 def user_request_data():
     current_user_email = get_jwt_identity()
-    print("User email ", current_user_email)
     user = User.objects(email = current_user_email).first()
-    print("User ", user.id)
-    requests_of_user = Request.objects(user = user)
-    print(requests_of_user)
+    requests_of_user = None
     result = []
+    if user:
+        requests_of_user = Request.objects(user = user)
     if requests_of_user:
         for req in requests_of_user:
             if not req.satisfied:
                 result.append({
-                    "id":str(req._id),
+                    "id":str(req.id),
                     "title": req.title,
                     "description": req.description
                 })
@@ -61,15 +59,18 @@ def user_request_data():
 @jwt_required()
 def get_request_data(id):
     try:
-        req = Request.objects.get(id=id).first()
+        req = Request.objects(id=id).first()
+        print(json.loads(req.to_json()).get("matched_users"))
         result = []
-        for match in req.matched_users:
+        for match in json.loads(req.to_json()).get("matched_users"):
+            print(match)
+            user = User.objects(id=match.get('user').get('$oid')).first()
             result.append({
-                "email":match.user.email,
-                "name":match.user.name,
-                "description":match.user.description
+                "email":user.email,
+                "name":user.name,
+                "description":user.description
             })
-        return result, 201
+        return jsonify(result), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
