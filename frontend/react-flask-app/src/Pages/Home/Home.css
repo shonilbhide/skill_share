@@ -2,7 +2,7 @@
 body {
   align: center;
   font-size: 16px; /* Default font size for the body */
-  font-family: 'fantasy', 'copperplate', sans-serif; /* Default font family for the body */
+  font-family: "fantasy", "copperplate", sans-serif; /* Default font family for the body */
 }
 
 .home-container {
@@ -29,6 +29,10 @@ a {
   padding: 20px; /* Adjusted padding for a taller banner */
   width: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
 }
 
 .banner h1 {
@@ -82,7 +86,5 @@ a {
   box-sizing: border-box;
   font-size: 20px; /* Adjusted font size for the item tiles */
 }
-
-
 
 /* Add more styles as needed */

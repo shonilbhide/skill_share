@@ -2,8 +2,12 @@
 
 import React, { useState } from 'react';
 import './SignUpPage.css'; // Import the CSS file
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const SignUpPage = () => {
+
+    const history = useHistory();
 
     const [formData, setFormData] = useState({
     name: '',
@@ -19,7 +23,7 @@ const SignUpPage = () => {
         setFormData({ ...formData, [field]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validation for mandatory fields
@@ -56,10 +60,26 @@ const SignUpPage = () => {
             );
             return;
         }
-
+        let response = await axios
+        .post("http://127.0.0.1:5000/users/signup", {
+          "name": formData.name.trim(),
+          "email": formData.email.trim(),
+          "phone": formData.phone.trim(),
+          "skill_hours": 100,
+          "wallet_id": "wallet123",
+          "password": formData.password.trim()
+        });
+        if (response && response.status === 200 && response.data){
+            localStorage.setItem('token', response.data.access_token);
+            history.push("/home");
+        }
         console.log('Form data submitted:', formData);
 
     };
+
+    const handleLogin = () => {
+      history.push("/login");
+    }
 
     return (
         <div>
@@ -142,6 +162,8 @@ const SignUpPage = () => {
             <br />
 
             <button type="submit">Submit</button>
+            <span> OR </span>
+            <button  onClick={handleLogin}>Login</button>
           </form>
         </div>
     );
