@@ -1,11 +1,12 @@
-from mongoengine import Document, StringField, ListField, ReferenceField, EmbeddedDocument, EmbeddedDocumentField, BooleanField
-
+from mongoengine import Document, StringField, ListField, ReferenceField, EmbeddedDocument, EmbeddedDocumentField, BooleanField, IntField
 class MatchedUsers(EmbeddedDocument):
     user = ReferenceField('User')
     req_id = ReferenceField('Request')
     accpeted_status = BooleanField()
+    requested_status = BooleanField()
 
 class Request(Document):
+    id = IntField()
     user = ReferenceField('User')
     vec = StringField()
     title = StringField(required=True)

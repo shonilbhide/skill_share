@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify, json
 from Models.Users import User
-from werkzeug.security import generate_password_hash, check_password_hash
+# from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+import bcrypt
 
 user_blueprint = Blueprint('user_blueprint', __name__)
 
@@ -32,7 +33,8 @@ def signup():
     data = request.get_json()
     user = User.objects(email=data['email']).first()
     if not user:
-        data['password'] = generate_password_hash(data['password'])  # Hash the password
+        hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+        data['password'] = hashed_password.decode('utf-8')
         user = User(**data)
         user.save()
         # Generate JWT token for authentication
@@ -50,12 +52,13 @@ def login():
 
     user = User.objects(email=email).first()
     print(user.email)
-    if not user or not check_password_hash(user.password, password):
+    if not user or not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
         return jsonify({'message': 'Invalid email or password'}), 401
 
     # Generate JWT token for authentication
-    access_token = create_access_token(identity=str(user.email))
+    access_token = create_access_token(identity=str(user.id))
     return jsonify({'message': 'Login successful', 'access_token': access_token}), 200
+
 
 # Protected route example using JWT token
 @user_blueprint.route('/user_profile', methods=['GET'])
@@ -74,4 +77,3 @@ def user_profile():
             "knows_description":user_from_db[0].want_to_teach,
         }
     return result_obj, 201
-

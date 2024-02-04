@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, ListField, ReferenceField, EmbeddedDocument, EmbeddedDocumentField, IntField
+from mongoengine import Document, StringField, ListField, ReferenceField, EmbeddedDocument, EmbeddedDocumentField, IntField, BooleanField
 
 class Skill(EmbeddedDocument):
     description = StringField(required=True)
@@ -17,6 +17,10 @@ class ConnectedUser(EmbeddedDocument):
     user_id = ReferenceField('User')
     chat_id = StringField(required=True)
 
+class RequestsIHave(EmbeddedDocument):
+    req_id = ReferenceField('Request')
+    accepted_status = BooleanField()
+
 class User(Document):
     name = StringField(required=True)
     email = StringField(required=True)
@@ -28,5 +32,6 @@ class User(Document):
     skill_hours = IntField()
     wallet_id = StringField()
     connected_users = ListField(EmbeddedDocumentField(ConnectedUser))
+    requests_i_have = ListField(EmbeddedDocument(RequestsIHave))
 
     meta = {'collection': 'users'}  # This specifies the collection name in MongoDB
