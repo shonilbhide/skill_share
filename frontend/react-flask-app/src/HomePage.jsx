@@ -3,6 +3,8 @@ import React from 'react';
 import './Home.css'; // Add a corresponding CSS file for styling
 
 const Home = () => {
+  const items = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
+
   return (
     <div className="home-container">
       {/* Dark Blue Banner */}
@@ -27,8 +29,15 @@ const Home = () => {
 
       {/* Main Content */}
       <div className="main-content">
-        {/* Your main content goes here */}
-        <p>Welcome to Skill Share! Explore and enhance your skills.</p>
+        {/* List of Items in Rectangular Tiles */}
+        <div className="item-list">
+          {items.map((item, index) => (
+            <div className="item-tile" key={index}><b>
+              {item}</b>
+              <p>Subtext</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
