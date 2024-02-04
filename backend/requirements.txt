@@ -3,3 +3,4 @@ flask
 mongoengine
 flask_jwt_extended
 bcrypt
+sentence_transformers
