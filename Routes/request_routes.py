@@ -125,34 +125,3 @@ def accepet_match_request():
         return jsonify({'message': "Requested Succesfully"}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400
-
-
-@request_blueprint.route('/request/user', methods=['POST'])
-@jwt_required
-def accepet_match_request():
-    try:
-        data = request.get_json()
-        # Request -> satisfied = True
-        # Request -> matched_users -> map user_id and make accepted_status = True
-        # User -> Update Requests I Have and update accepted_status = True
-        acceptedUser = User.objects(email = data.user_id).first()
-        req = Request.objects.get(id=data.req_id).first()
-        temp = []
-        for r in acceptedUser.requests_i_have:
-            if r.id != req._id:
-                temp.append(r)
-        acceptedUser.requests_i_have = temp
-        print(acceptedUser)
-        acceptedUser.save()
-        req.satisfied = True
-        temp = []
-        for r in req.matched_users:
-            if r.user == acceptedUser:
-                r.accepted_status = True
-            temp.append(r)
-
-        req.matched_users = temp
-        req.save()
-        return jsonify({'message': "Requested Succesfully"}), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
