@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, ListField, ReferenceField, EmbeddedDocument, EmbeddedDocumentField, IntField, BooleanField
+from mongoengine import Document, StringField, ListField, ReferenceField, EmbeddedDocument, EmbeddedDocumentField, IntField, BooleanField, FloatField
 
 class Skill(EmbeddedDocument):
     description = StringField(required=True)
@@ -11,6 +11,7 @@ class WantToLearn(EmbeddedDocument):
 class WantToTeach(EmbeddedDocument):
     description = StringField(required=True)
     title = StringField(required=True)
+    vec = ListField(FloatField())
 
     def to_json(self):
         return {

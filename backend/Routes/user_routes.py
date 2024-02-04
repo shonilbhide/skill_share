@@ -4,7 +4,7 @@ from Models.Users import User
 # from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import bcrypt
-
+from Utils.TextUtils import load_model, get_embeddings
 user_blueprint = Blueprint('user_blueprint', __name__)
 
 
@@ -31,16 +31,22 @@ def add_user():
 # Signup API with password hashing
 @user_blueprint.route('/users/signup', methods=['POST'])
 def signup():
+    model_path = './models/model.pkl'  # Specify the desired path to save the model
     data = request.get_json()
     user = User.objects(email=data['email']).first()
     if not user:
         hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
         data['password'] = hashed_password.decode('utf-8')
-        user = User(**data)
-        user.save()
-        # Generate JWT token for authentication
-        access_token = create_access_token(identity=str(user.email))
-        return jsonify({'message': 'User registered successfully', 'access_token': access_token}), 200
+
+        for row in data['want_to_teach']:
+            if row['description']:
+                embeddings = get_embeddings(row['description'], load_model(model_path))
+            row['vec']  = embeddings
+            user = User(**data)
+            user.save()
+            # Generate JWT token for authentication
+            access_token = create_access_token(identity=str(user.email))
+            return jsonify({'message': 'User registered successfully', 'access_token': access_token}), 200
     else:
         return jsonify({'message': 'User is already Registered, please Login'}), 400
 
