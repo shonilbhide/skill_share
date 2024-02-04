@@ -15,7 +15,7 @@ def hello_requests():
         print(e)
         return "Error in Ping"
 
-@request_blueprint.route('/create_request', methods=['GET'])
+@request_blueprint.route('/create_request', methods=['POST'])
 @jwt_required()
 def create_request():
     data = request.get_json()

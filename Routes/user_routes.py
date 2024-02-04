@@ -70,8 +70,7 @@ def user_profile():
             "email": user_from_db[0].email,
             "description": user_from_db[0].description,
             "skill_hours": user_from_db[0].skill_hours,
-            "knows_title":user_from_db[0].want_to_teach,
-            "knows_description":user_from_db[0].want_to_teach,
+            "want_to_teach":[ req.to_json() for req in user_from_db[0].want_to_teach ],
         }
     return result_obj, 201
 

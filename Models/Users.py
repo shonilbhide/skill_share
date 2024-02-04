@@ -11,7 +11,12 @@ class WantToLearn(EmbeddedDocument):
 class WantToTeach(EmbeddedDocument):
     description = StringField(required=True)
     title = StringField(required=True)
-    matched_users = ListField(ReferenceField('User'))
+
+    def to_json(self):
+        return {
+            'description': self.description,
+            'title': self.title
+        }
 
 class ConnectedUser(EmbeddedDocument):
     user_id = ReferenceField('User')
