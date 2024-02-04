@@ -24,7 +24,7 @@ function App() {
 
     return (
         <div className="App">
-            <HomePage />
+            <SignUpPage />
         </div>
     );
 }

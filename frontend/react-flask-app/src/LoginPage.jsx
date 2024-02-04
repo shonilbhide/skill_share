@@ -32,6 +32,9 @@ const LoginPage = () => {
 
     return (
         <div>
+          <div className="banner">
+            <h1>Skill Share</h1>
+          </div>
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <label>

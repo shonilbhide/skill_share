@@ -63,6 +63,9 @@ const SignUpPage = () => {
 
     return (
         <div>
+          <div className="banner">
+            <h1>Skill Share</h1>
+          </div>
           <h1>Sign Up</h1>
           <form onSubmit={handleSubmit}>
             <label>

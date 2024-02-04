@@ -19,16 +19,18 @@ textarea {
 }
 
 button {
-  background-color: #4caf50;
+  background-color: #000000;
   color: white;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-family: 'fantasy','copperplate',sans-serif;
+  font-size: 20px;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #263238;
 }
 
 div {

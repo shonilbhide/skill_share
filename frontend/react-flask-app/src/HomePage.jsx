@@ -7,7 +7,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Dark Blue Banner */}
+
       <div className="banner">
         <h1>Skill Share</h1>
       </div>
