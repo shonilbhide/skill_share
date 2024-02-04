@@ -56,7 +56,7 @@ const ProfilePage = () => {
           </div>
           <div className="profile-details">
             <h2 className="title">{profileData.name}</h2>
-            {/* <p>{profileData.email}</p> */}
+            <p>{profileData.description}</p>
             <div className="item-tile">
             <p>Skill-hours left: {profileData.skill_hours ? profileData.skill_hours : 5}</p>
             </div>
@@ -70,7 +70,6 @@ const ProfilePage = () => {
         {profileData.want_to_teach &&  profileData.want_to_teach.length > 0 ? profileData.want_to_teach.map((item, index) => (
                 <div key ={index} className="item-list">
                 <div className="item-tile">
-                <h5>{item.title}</h5>
                 <h6>{item.description}</h6>
                 </div>
                 </div>

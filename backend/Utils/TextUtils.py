@@ -35,7 +35,7 @@ def compare(sentence_embeddings1, sentence_embeddings2):
 def get_matches(incoming_data, result):
     embedding1 = incoming_data['description']
 
-    sorted_numbers = sorted(result, key=lambda x: compare(embedding1, x['description']), reverse=True)
+    sorted_numbers = sorted(result, key=lambda x: compare(embedding1, x['description']))
     top_items = sorted_numbers[:10]
     return top_items
 

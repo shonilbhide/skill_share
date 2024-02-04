@@ -65,9 +65,10 @@ const SignUpPage = () => {
           "name": formData.name.trim(),
           "email": formData.email.trim(),
           "phone": formData.phone.trim(),
-          "skill_hours": 100,
+          "skill_hours": 5,
           "wallet_id": "wallet123",
-          "password": formData.password.trim()
+          "password": formData.password.trim(),
+          "want_to_offer": formData.wantToOffer.trim()
         });
         if (response && response.status === 200 && response.data){
             localStorage.setItem('token', response.data.access_token);

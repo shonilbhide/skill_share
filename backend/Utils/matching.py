@@ -30,7 +30,7 @@ def match(req_user_id, req_id, description):
     top_matches = get_matches(incoming_data,result)
 
     req = Request.objects(id = req_id).first()
-    user_ids = [top_match['user_id'] for top_match in top_matches]
+    user_ids = list(set([top_match['user_id'] for top_match in top_matches]))
     print(user_ids)
     i = 0
     temp_arr = []

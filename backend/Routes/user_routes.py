@@ -35,19 +35,28 @@ def signup():
     model_path = './models/model.pkl'  # Specify the desired path to save the model
     data = request.get_json()
     user = User.objects(email=data['email']).first()
+    print(data)
     if not user:
         hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
         data['password'] = hashed_password.decode('utf-8')
+        data['want_to_teach'] = []
+        for row in data['want_to_offer'].split("."):
+            print(row)
+            if row:
+                embeddings = get_embeddings(row, load_model(model_path))
+            
+            data['want_to_teach'].append({
+                'vec': embeddings,
+                'description': row,
+                'title': 'Temp'
+            })
 
-        for row in data['want_to_teach']:
-            if row['description']:
-                embeddings = get_embeddings(row['description'], load_model(model_path))
-            row['vec']  = embeddings
-            user = User(**data)
-            user.save()
+        del data['want_to_offer']
+        user = User(**data)
+        user.save()
             # Generate JWT token for authentication
-            access_token = create_access_token(identity=str(user.email))
-            return jsonify({'message': 'User registered successfully', 'access_token': access_token}), 200
+        access_token = create_access_token(identity=str(user.email))
+        return jsonify({'message': 'User registered successfully', 'access_token': access_token}), 200
     else:
         return jsonify({'message': 'User is already Registered, please Login'}), 400
 
