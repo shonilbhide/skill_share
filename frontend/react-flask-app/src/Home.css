@@ -1,0 +1,48 @@
+/* Home.css */
+.home-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.banner {
+  background-color: #1a237e; /* Dark Blue Color */
+  color: white;
+  padding: 00px; /* Adjusted padding for a taller banner */
+  width: 100%;
+
+}
+
+.banner h1 {
+  margin-left: 0px; /* Add margin to move the text to the left */
+  font-size: 60px; /* Adjusted font size */
+  font-weight: bold; /* Added font weight for emphasis */
+  font-family: 'Fantasy',copperplate; /* Change font family as needed */
+}
+
+.top-nav {
+  background-color: #263238; /* Dark Blue Grey Color */
+  padding: 10px;
+  justify-content: center;
+}
+
+.top-nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.top-nav li {
+  margin-right: 20px;
+}
+
+.top-nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.main-content {
+  padding: 0px;
+}
+
+/* Add more styles as needed */
