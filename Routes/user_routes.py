@@ -49,17 +49,29 @@ def login():
     password = data.get('password')
 
     user = User.objects(email=email).first()
+    print(user.email)
     if not user or not check_password_hash(user.password, password):
         return jsonify({'message': 'Invalid email or password'}), 401
 
     # Generate JWT token for authentication
-    access_token = create_access_token(identity=str(user.id))
+    access_token = create_access_token(identity=str(user.email))
     return jsonify({'message': 'Login successful', 'access_token': access_token}), 200
 
 # Protected route example using JWT token
-@user_blueprint.route('/users/protected', methods=['GET'])
+@user_blueprint.route('/user_profile', methods=['GET'])
 @jwt_required()
-def protected_route():
-    current_user_id = get_jwt_identity()  # Get current user ID from JWT token
-    user = User.objects.get(email=current_user_id)
-    return jsonify({'message': 'This is a protected route', 'user': user}), 200
+def user_profile():
+    current_user_email = get_jwt_identity()
+    user_from_db = User.objects(email = current_user_email)
+    print(user_from_db[0].want_to_teach)
+    if user_from_db:
+        result_obj = {
+            "name": user_from_db[0].name,
+            "email": user_from_db[0].email,
+            "description": user_from_db[0].description,
+            "skill_hours": user_from_db[0].skill_hours,
+            "knows_title":user_from_db[0].want_to_teach,
+            "knows_description":user_from_db[0].want_to_teach,
+        }
+    return result_obj, 201
+
