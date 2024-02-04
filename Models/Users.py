@@ -21,6 +21,7 @@ class User(Document):
     name = StringField(required=True)
     email = StringField(required=True)
     phone = StringField(required=True)
+    password = StringField(required=True)
     description = StringField()
     want_to_learn = ListField(EmbeddedDocumentField(WantToLearn))
     want_to_teach = ListField(EmbeddedDocumentField(WantToTeach))

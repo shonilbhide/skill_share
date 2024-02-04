@@ -18,9 +18,8 @@ def add_user():
         user_data = request.json
         user = User(**user_data)
         user.save()
-
         user_json = user.to_json()
         user_dict = json.loads(user_json)
-        return jsonify(user_dict), 400
+        return jsonify(user_dict), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400
