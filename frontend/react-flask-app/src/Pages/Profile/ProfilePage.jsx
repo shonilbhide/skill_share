@@ -1,22 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Profile.css'; // Import your CSS file
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 const ProfilePage = () => {
-  // Dummy data for illustration
-  const profileData = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    card1: {
-      title: 'Python Basics',
-      description: 'I can teach basics of python, which may include data structured and object oriented programming in python.',
-    },
-    card2: {
-      title: 'Tennis',
-      description: 'Being a professional Tennis player, I can teach Tennis from the basics to an advance level.',
-    },
+  const [profileData, setProfileData] = useState([]);
+
+  const getProfileData = async () => {
+    const response = await axios.get(`http://127.0.0.1:5000/user_profile`, {
+      headers: {
+        "Authorization" : "Bearer " + localStorage.getItem("token")
+      }
+    });
+    if(response && response.status >= 200){
+      console.log("Submitted ", response.data);
+      setProfileData(response.data);
+    }
   };
+
+  useEffect(() => {
+    getProfileData();
+  }, []);
 
   const handleLogOut = () => {
     history.push("/login");
@@ -36,9 +40,9 @@ const ProfilePage = () => {
       {/* Top Navigation */}
       <div className="top-nav">
         <ul>
-          {/* <li>
+          <li>
             <a href="/profile">Profile</a>
-          </li> */}
+          </li>
           <li>
             <a href="/matches">Requests</a>
           </li>
@@ -52,9 +56,9 @@ const ProfilePage = () => {
           </div>
           <div className="profile-details">
             <h2 className="title">{profileData.name}</h2>
-            <p>{profileData.email}</p>
+            {/* <p>{profileData.email}</p> */}
             <div className="item-tile">
-            <p>Skill-hours left: 5</p>
+            <p>Skill-hours left: {profileData.skill_hours ? profileData.skill_hours : 5}</p>
             </div>
             
           </div>
@@ -63,20 +67,23 @@ const ProfilePage = () => {
 
         <div className="item-list-container">
         <h3>My Skills:</h3>
-          <div className="item-list">
-            <div className="item-tile">
-              <h5>{profileData.card1.title}</h5>
-              <h6>{profileData.card1.description}</h6>
-            </div>
-
-            <div className="item-tile">
-              <h5>{profileData.card2.title}</h5>
-              <h6>{profileData.card2.description}</h6>
-            </div>
+        {profileData.want_to_teach &&  profileData.want_to_teach.length > 0 ? profileData.want_to_teach.map((item, index) => (
+                <div key ={index} className="item-list">
+                <div className="item-tile">
+                <h5>{item.title}</h5>
+                <h6>{item.description}</h6>
+                </div>
+                </div>
+              ))
+            :
+            <div>
+              <p>Learn more and add skills !!!</p>
+              </div>
+            }
           </div>
         </div>
       </div>
-    </div>
+
   );
 };
 
