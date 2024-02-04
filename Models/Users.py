@@ -37,6 +37,6 @@ class User(Document):
     skill_hours = IntField()
     wallet_id = StringField()
     connected_users = ListField(EmbeddedDocumentField(ConnectedUser))
-    requests_i_have = ListField(EmbeddedDocument(RequestsIHave))
+    requests_i_have = ListField(EmbeddedDocumentField(RequestsIHave))
 
     meta = {'collection': 'users'}  # This specifies the collection name in MongoDB

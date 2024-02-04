@@ -70,7 +70,7 @@ def get_request_data():
         return jsonify({'error': str(e)}), 400
 
 
-@request_blueprint.route('/match_request/send', method=['POST'])
+@request_blueprint.route('/match_request/send', methods=['POST'])
 @jwt_required
 def send_match_request():
     try:
