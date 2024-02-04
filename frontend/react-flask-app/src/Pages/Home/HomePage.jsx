@@ -112,9 +112,9 @@ const Home = () => {
       {/* Top Navigation */}
       <div className="top-nav">
         <ul>
-          {/* <li>
+          <li>
             <a href="/profile">Profile</a>
-          </li> */}
+          </li>
           <li>
             <a href="/matches">Requests</a>
           </li>
