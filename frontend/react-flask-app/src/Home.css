@@ -1,0 +1,88 @@
+/* Home.css */
+body {
+  align: center;
+  font-size: 16px; /* Default font size for the body */
+  font-family: 'fantasy', 'copperplate', sans-serif; /* Default font family for the body */
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.req_id {
+  font-size: 12px;
+  margin-top: -10px;
+}
+
+.title {
+  font-size: 28px;
+}
+
+a {
+  color: black;
+}
+
+.banner {
+  background-color: #000000; /* Dark Blue Color */
+  color: white;
+  padding: 20px; /* Adjusted padding for a taller banner */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.banner h1 {
+  margin-left: 10px; /* Add margin to move the text to the left */
+  margin-right: 10px;
+  font-size: 40px; /* Adjusted font size */
+  font-weight: bold; /* Added font weight for emphasis */
+}
+
+.top-nav {
+  background-color: #263238; /* Light Blue Color */
+  padding: 10px;
+  /*text-align: right;*/
+}
+
+.top-nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center; /* Center-align the buttons */
+}
+
+.top-nav li {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.top-nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.main-content {
+  padding: 20px;
+  text-align: center; /* Center-align the content */
+}
+
+/* List of Items in Rectangular Tiles */
+.item-list {
+  display: inline-block; /* Make it an inline block to center with margin: 0 auto; */
+  margin: 0 auto; /* Center the items horizontally */
+}
+
+.item-tile {
+  width: 1000px; /* Adjusted width and margin as needed */
+  /*max-width: 300px; /* Set a maximum width for each item */
+  background-color: #eceff1; /* Tile background color */
+  padding: 15px;
+  margin: 0 10px 20px 10px; /* Adjusted margin */
+  box-sizing: border-box;
+  font-size: 20px; /* Adjusted font size for the item tiles */
+}
+
+
+
+/* Add more styles as needed */
