@@ -26,7 +26,7 @@ const LoginPage = () => {
             alert('One or more mandatory fields are incomplete');
             return;
         }
-
+        // localStorage.setItem('token', response.data.access_token);
         console.log('Login data submitted:', formData);
     };
 
