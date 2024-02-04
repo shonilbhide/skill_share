@@ -36,7 +36,7 @@ def create_request():
             req_json = req.to_json()
             req_dict = json.loads(req_json)
             print(desc)
-            thread = threading.Thread(target=match, args= (user.id, str(desc),))
+            thread = threading.Thread(target=match, args= (user.id, req.id, str(desc),))
             thread.start()
 
             return jsonify(req_dict), 201
