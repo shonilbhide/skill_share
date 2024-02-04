@@ -1,5 +1,5 @@
 from Models.Users import User
-from TextUtils import *
+from Utils.TextUtils import *
 
 def match(req_user_id, description):
     fields_to_select = ['id', 'description']
@@ -13,7 +13,7 @@ def match(req_user_id, description):
             'user_id': str(id),
             'description': description
         })
-    
+
     print(result)
 
     incoming_data = {

@@ -1,6 +1,7 @@
 from datetime import timedelta
 from flask import Blueprint, request, jsonify, json
 from Models.Users import User
+from Models.Requests import Request
 # from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import bcrypt
@@ -85,10 +86,11 @@ def requests_for_user():
     result_obj = []
     if user_from_db:
         for req in user_from_db.requests_i_have:
+            r = req.req
             result_obj.append({
-                "req_id": req.get('req_id'),
-                "req_title": req.get('req_title'),
-                "req_description": req.get('req_description'),
-                "accepted_status": req.get('accepted_status')
+                "req_id": str(r.id),
+                "req_title": r.title,
+                "req_description": r.description,
+                "accepted_status": req.accepted_status
             })
-    return result_obj, 201
+    return jsonify(result_obj), 201

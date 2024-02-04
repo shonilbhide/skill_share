@@ -1,9 +1,8 @@
 // Popup.js
 import React, { useEffect, useRef } from 'react';
 import './Popup.css';
-import InputForm from '../InputForm';
 
-const Popup = ({ callback, onClose }) => {
+const Popup = ({ onClose, ComponentVal }) => {
     const popupRef = useRef(null);
 
     const handleClickOutside = (event) => {
@@ -24,7 +23,7 @@ const Popup = ({ callback, onClose }) => {
         <div className="popup">
             <div ref={popupRef} className="popup-content">
                 <button className="close-btn" onClick={onClose}>Close</button>
-                <InputForm callback={callback} />
+                <ComponentVal />
                 {/* You can customize the content of the popup as needed */}
             </div>
         </div>

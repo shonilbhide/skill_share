@@ -5,11 +5,17 @@ import { useHistory } from 'react-router-dom';
 import './Home.css';
 import axios from 'axios';
 import Popup from '../../Components/Popup/Popup';
+import InputForm from '../../Components/InputForm';
+import RequestSend from '../../Components/RequestSend';
 
 const Home = () => {
-  const [items, setItems] = useState();
+  const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showRequestMatchPopup, setshowRequestMatchPopup] = useState({
+    isOpen : false,
+    data: null
+  });
   const history = useHistory();
 
   const handleLogOut = () => {
@@ -69,20 +75,31 @@ const Home = () => {
     setShowPopup(false);
   }
 
-  const handleRequestSend = async (item) => {
-    const response = await axios.post("http://127.0.0.1:5000/requests", {
-      // "title": formData.title,
-      // "description": formData.description,
-    }, {
+  const handleCloseSendPopup = () => {
+    setshowRequestMatchPopup({
+      isOpen: false,
+      data: null
+    })
+  }
+
+  const handleRequestView = useCallback(async (item) => {
+    const response = await axios.get(`http://127.0.0.1:5000/requests/${item.id}`, {
       headers: {
         "Authorization" : "Bearer " + localStorage.getItem("token")
       }
     });
-    if(response && response.status === 200 && response.data){
+    if(response && response.status >= 200){
       console.log("Submitted ", response.data);
-      getUserStudyJourney();
-  }
-}
+      setshowRequestMatchPopup({
+        isOpen:true,
+        data: {
+          title: item.title,
+          req_id : item.id,
+          users : response.data
+        }
+      })
+    }
+  }, []);
 
   return (
     <div className="home-container">
@@ -111,12 +128,12 @@ const Home = () => {
         <h1 className="title">Study Journey</h1>
         <div className="item-list">
           {isLoading && <div>Loading...</div>}
-          {items ? items.map((item, index) => (
+          {items && items.length > 0 ? items.map((item, index) => (
             <div className="item-tile" key={index}>
               <b> {item.title}</b>
               <p>{item.description}</p>
               <p className="req_id"><a href={`#id${index + 1}`}>ID {index + 1}</a></p>
-              <button onClick={() => handleRequestSend(item)}>Request</button>
+              <button onClick={() => handleRequestView(item)}>View Providers</button>
             </div>
           )) :
           <div>
@@ -127,7 +144,8 @@ const Home = () => {
       </div>
 
       {/* Popup Component */}
-      {showPopup && <Popup callback={handleRequestSubmit} onClose={handlePopupClose}/>}
+      {showPopup && <Popup ComponentVal={() => <InputForm callback={handleRequestSubmit} />} onClose={handlePopupClose}/>}
+      {showRequestMatchPopup.isOpen && <Popup onClose={handleCloseSendPopup} ComponentVal={() => <RequestSend callback={handleCloseSendPopup}  requestData={showRequestMatchPopup.data} />} />}
 
     </div>
   );
