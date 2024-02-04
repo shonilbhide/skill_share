@@ -30,11 +30,14 @@ const Home = () => {
       {/* Main Content */}
       <div className="main-content">
         {/* List of Items in Rectangular Tiles */}
+            <h1 className="title">Requests</h1>
         <div className="item-list">
           {items.map((item, index) => (
             <div className="item-tile" key={index}><b>
               {item}</b>
-              <p>Subtext</p>
+              <p>Description</p>
+              <br />
+              <p className="req_id"><a href={`#id${index + 1}`}>ID</a></p>
             </div>
           ))}
         </div>

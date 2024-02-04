@@ -3,6 +3,7 @@ import axios from 'axios';
 import SignUpPage from './SignUpPage';
 import LoginPage from './LoginPage';
 import HomePage from './HomePage';
+import MatchedPage from './MatchedPage';
 import React , { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
@@ -24,7 +25,7 @@ function App() {
 
     return (
         <div className="App">
-            <SignUpPage />
+            <MatchedPage />
         </div>
     );
 }
