@@ -75,20 +75,21 @@ def get_request_data(id):
         return jsonify({'error': str(e)}), 400
 
 
-@request_blueprint.route('/match_request/send/<id>', methods=['POST'])
+@request_blueprint.route('/match_request/send/<id>/user/<user_email>', methods=['POST'])
 @jwt_required()
-def send_match_request(id):
+def send_match_request(id, user_email):
     try:
-        current_user_email = get_jwt_identity()
-        print("Its here ", id, current_user_email)
+        # current_user_email = get_jwt_identity()
+        # print("Its here ", id, current_user_email)
         # data.user_id, -> to add the requests_i_have
         # data.req_id -> request to be get from request Objects and add it to the user
-        requestedUser = User.objects(email = current_user_email).first()
+        requestedUser = User.objects(email = user_email).first()
         print("Its here req User ", requestedUser)
         req = Request.objects.get(id=id)
         print("Its here req ", req)
         reqIHave = RequestsIHave()
         reqIHave.req = req
+        reqIHave.accepted_status = False
         requestedUser.requests_i_have.append(reqIHave)
         print(requestedUser)
         requestedUser.save()
@@ -96,30 +97,31 @@ def send_match_request(id):
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-@request_blueprint.route('/request/accept', methods=['POST'])
-@jwt_required
-def accepet_match_request():
+@request_blueprint.route('/request/accept/<id>', methods=['POST'])
+@jwt_required()
+def accepet_match_request(id):
     try:
-        data = request.get_json()
         # Request -> satisfied = True
         # Request -> matched_users -> map user_id and make accepted_status = True
         # User -> Update Requests I Have and update accepted_status = True
-        acceptedUser = User.objects(email = data.user_id).first()
-        req = Request.objects.get(id=data.req_id).first()
+        current_user_email = get_jwt_identity()
+        acceptedUser = User.objects(email = current_user_email).first()
+        req = Request.objects.get(id=id)
         temp = []
         for r in acceptedUser.requests_i_have:
-            if r.id != req._id:
+            if r.req != req:
                 temp.append(r)
         acceptedUser.requests_i_have = temp
         print(acceptedUser)
         acceptedUser.save()
         req.satisfied = True
         temp = []
+        print("its ",req.matched_users)
         for r in req.matched_users:
             if r.user == acceptedUser:
                 r.accepted_status = True
             temp.append(r)
-
+        print("its here temp ", temp)
         req.matched_users = temp
         req.save()
         return jsonify({'message': "Requested Succesfully"}), 200
