@@ -4,6 +4,8 @@ from Models.Users import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from Models.Users import RequestsIHave
+from Utils.matching import match
+import threading
 
 request_blueprint = Blueprint('request_blueprint', __name__)
 
@@ -23,15 +25,20 @@ def create_request():
     try:
         current_user_email = get_jwt_identity()
         user = User.objects(email = current_user_email).first()
+        desc = data.get('description')
         if user:
             req = Request(user=user,
                             title=data.get('title'),
-                            description=data.get('description'),
+                            description=desc,
                             matched_users = data.get('matched_users'),
                             satisfied = False)
             req.save()
             req_json = req.to_json()
             req_dict = json.loads(req_json)
+            print(desc)
+            thread = threading.Thread(target=match, args= (user.id, str(desc),))
+            thread.start()
+
             return jsonify(req_dict), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 400
