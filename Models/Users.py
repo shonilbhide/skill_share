@@ -23,7 +23,7 @@ class ConnectedUser(EmbeddedDocument):
     chat_id = StringField(required=True)
 
 class RequestsIHave(EmbeddedDocument):
-    req_id = ReferenceField('Request')
+    req = ReferenceField('Request')
     accepted_status = BooleanField()
 
 class User(Document):

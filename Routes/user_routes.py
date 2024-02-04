@@ -1,3 +1,4 @@
+from datetime import timedelta
 from flask import Blueprint, request, jsonify, json
 from Models.Users import User
 # from werkzeug.security import generate_password_hash, check_password_hash
@@ -56,7 +57,7 @@ def login():
         return jsonify({'message': 'Invalid email or password'}), 401
 
     # Generate JWT token for authentication
-    access_token = create_access_token(identity=str(user.id))
+    access_token = create_access_token(identity=str(user.email), expires_delta=timedelta(days=30))
     return jsonify({'message': 'Login successful', 'access_token': access_token}), 200
 
 
