@@ -3,9 +3,11 @@ from Routes.user_routes import user_blueprint
 from Routes.request_routes import request_blueprint
 import os
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 import DB
 
 app = Flask(__name__)
+CORS(app)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "test")
 app.config['JWT_SECRET_KEY'] = os.environ.get("JWT_SECRET_KEY", "test123")
 jwt = JWTManager(app)
