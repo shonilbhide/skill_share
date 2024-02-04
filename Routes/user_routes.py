@@ -60,8 +60,6 @@ def login():
     access_token = create_access_token(identity=str(user.email), expires_delta=timedelta(days=30))
     return jsonify({'message': 'Login successful', 'access_token': access_token}), 200
 
-
-# Protected route example using JWT token
 @user_blueprint.route('/user_profile', methods=['GET'])
 @jwt_required()
 def user_profile():
@@ -76,4 +74,21 @@ def user_profile():
             "skill_hours": user_from_db[0].skill_hours,
             "want_to_teach":[ req.to_json() for req in user_from_db[0].want_to_teach ],
         }
+    return result_obj, 201
+
+@user_blueprint.route('/requests_for_user', methods=['GET'])
+@jwt_required()
+def requests_for_user():
+    current_user_email = get_jwt_identity()
+    user_from_db = User.objects(email = current_user_email).first()
+    print(user_from_db.requests_i_have)
+    result_obj = []
+    if user_from_db:
+        for req in user_from_db.requests_i_have:
+            result_obj.append({
+                "req_id": req.get('req_id'),
+                "req_title": req.get('req_title'),
+                "req_description": req.get('req_description'),
+                "accepted_status": req.get('accepted_status')
+            })
     return result_obj, 201
